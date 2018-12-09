@@ -80,14 +80,14 @@ void Contest::processQuizFile(std::ifstream& in_stream)
 
         if (line == 5)
         {
+            // If line = 5, then the next line is ans. Right?
+            // get that ans, and skip the '\n'
             in_stream.get(next);
-            in_stream.ignore(256,'\n');   // ignore until space
-            //cout << "test get ->" << next << endl;     // answer
-
-
+            in_stream.ignore(256,'\n');   // ignore until \n
+           
             cout << "\nans:";
             cin >> m_ans;
-
+            
             if(m_ans == next)
             {
                 m_scores += 5;
@@ -98,14 +98,14 @@ void Contest::processQuizFile(std::ifstream& in_stream)
                 (m_scores > 0) ? m_scores -= 2.5 : m_scores = 0;
                 cout<<" # Wrong ans.\n\n";
             }
-
+            
+            // Reset line
             line = -1;
         }
         else
-        {
+        {   // Read the input line-by-line and print out the screen.
             in_stream.getline(m_oneline,500);
             cout << m_oneline << endl;
-            //cout << "test getline ->" << m_oneline << endl;
         }
 
         line++;
@@ -170,14 +170,13 @@ int main()
             test.display();
             break;
         case 'q':
+            cout << "Thanks for taking the quiz.\n";
             exit(1);
         default:
             cout<<"invalid choice!";
         }
 
     } while (test.doAgain());
-
-    cout << "Thanks for taking the quiz.\n";
 
     return 0;
 }
