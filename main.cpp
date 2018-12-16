@@ -1,6 +1,6 @@
 /******************************************************************************
 
-    Author: vanchautran11ece@gmail.com
+    Author: tchau@esilicon.com
 
 *******************************************************************************/
 
@@ -8,8 +8,15 @@
 #include <cstdlib>
 #include <string>
 #include <fstream>
+#include <limits>
 
 using namespace std;
+
+void clear_input()
+{
+    cin.clear();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}
 
 class Contest
 {
@@ -80,14 +87,18 @@ void Contest::processQuizFile(std::ifstream& in_stream)
 
         if (line == 5)
         {
-            // If line = 5, then the next line is ans. Right?
-            // get that ans, and skip the '\n'
             in_stream.get(next);
-            in_stream.ignore(256,'\n');   // ignore until \n
-           
-            cout << "\nans:";
-            cin >> m_ans;
-            
+            in_stream.ignore(256,'\n');   // ignore until space
+            //cout << "test get ->" << next << endl;     // answer
+
+            do
+            {
+                cout << "\nans:";
+                cin >> m_ans;
+                clear_input();
+                cout << "'a', 'b', 'c' or 'd' silly!";
+            } while (m_ans != 'a' && m_ans != 'b' && m_ans != 'c' && m_ans != 'd');
+
             if(m_ans == next)
             {
                 m_scores += 5;
@@ -98,14 +109,14 @@ void Contest::processQuizFile(std::ifstream& in_stream)
                 (m_scores > 0) ? m_scores -= 2.5 : m_scores = 0;
                 cout<<" # Wrong ans.\n\n";
             }
-            
-            // Reset line
+
             line = -1;
         }
         else
-        {   // Read the input line-by-line and print out the screen.
+        {
             in_stream.getline(m_oneline,500);
             cout << m_oneline << endl;
+            //cout << "test getline ->" << m_oneline << endl;
         }
 
         line++;
@@ -114,8 +125,10 @@ void Contest::processQuizFile(std::ifstream& in_stream)
 
 void Contest::init()
 {
+    std::string stdName;
     cout << "\t\t   Examinee Name:\t";
-    cin >> m_name;
+    getline(cin, stdName);
+    std::cin.ignore(32767, '\n');
 }
 
 void Contest::display()
@@ -178,6 +191,6 @@ int main()
 
     } while (test.doAgain());
 
+
     return 0;
 }
-
